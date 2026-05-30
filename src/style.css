@@ -22,13 +22,17 @@
 
 * { box-sizing: border-box; }
 
+html {
+  overflow-x: hidden; /* bloque la scrollbar horizontale des animations d'entrée */
+}
+
 html, body {
   margin: 0;
   padding: 0;
   background: var(--paper-cream);
   color: var(--ink);
   font-family: var(--serif);
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.5;
   cursor: none;
 }
@@ -336,6 +340,15 @@ a.inline:hover { color: var(--moss-deep); border-color: var(--moss-deep); }
   padding: 0 56px;
 }
 
+@media (max-width: 1400px) {
+  .wrap { padding: 0 40px; }
+  .nav  { padding: 18px 40px 14px; }
+}
+@media (max-width: 1100px) {
+  .wrap { padding: 0 24px; }
+  .nav  { padding: 16px 24px 12px; }
+}
+
 /* ── Nav ── */
 
 .nav {
@@ -393,6 +406,40 @@ a.inline:hover { color: var(--moss-deep); border-color: var(--moss-deep); }
 .col-rule { width: 1px; background: var(--rule); }
 
 input, button, a, textarea, select { cursor: none; }
+
+/* ── Scrollbar ── */
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-pale);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+
+/* ── Gallery frame: limite la hauteur sur petits écrans ── */
+
+.gframe {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+@media (max-width: 960px) {
+  .gframe { max-height: 68vh; }
+}
 
 /* ── Image shimmer skeleton ── */
 

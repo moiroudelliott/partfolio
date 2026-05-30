@@ -66,7 +66,7 @@ export default function CategoryPage({ ui, data, go, route }) {
             <div className="kicker" style={{ marginBottom: 14, animation: 'hero-up 0.6s cubic-bezier(.22,1,.36,1) 0.1s both' }}>
               § {cat.number} · {ui.series}
             </div>
-            <h1 className="serif-display" style={{ fontSize: 'clamp(80px, 11vw, 168px)', margin: 0, lineHeight: 0.9 }}>
+            <h1 className="serif-display" style={{ fontSize: 'clamp(52px, 7vw, 120px)', margin: 0, lineHeight: 0.9 }}>
               {cat.label.split(' ').map((w, i) => (
                 <div key={i} style={{ overflow: 'hidden', paddingBottom: '0.28em', marginBottom: '-0.28em' }}>
                   <span style={{ display: 'block', fontStyle: i % 2 === 1 ? 'italic' : 'normal', animation: `hero-line 0.75s cubic-bezier(.22,1,.36,1) ${0.18 + i * 0.18}s both` }}>
@@ -145,7 +145,7 @@ function CoverImage({ cat, idx }) {
       image={image} tone={TONES[idx % 6]} ratio="4 / 5"
       rotate={-2.5} tapeSeed={idx} hoverRot={1.5}
       style={{ width: '88%', marginLeft: 'auto' }}
-      onClick={image ? () => open([image], 0) : null}
+      onClick={image ? () => open([image]) : null}
     />
   )
 }
@@ -306,7 +306,7 @@ function CatPager({ dir, cat, ui, go }) {
       {!isNext && <ArrowCircle dir="left" />}
       <div>
         <div className="kicker" style={{ marginBottom: 8 }}>{isNext ? ui.nextSeries : ui.prevSeries}</div>
-        <div className="serif-display" style={{ fontSize: 40, fontStyle: 'italic' }}>{cat.label}</div>
+        <div className="serif-display" style={{ fontSize: 'clamp(20px, 2.5vw, 36px)', fontStyle: 'italic' }}>{cat.label}</div>
         <div style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 4 }}>{cat.tagline}</div>
       </div>
       {isNext && <ArrowCircle dir="right" />}

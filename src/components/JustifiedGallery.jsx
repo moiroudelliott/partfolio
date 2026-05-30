@@ -380,7 +380,7 @@ function Img({ piece, dim, gIdx }) {
       <div
         className="hoverable"
         data-cursor="hover"
-        onClick={hasImage ? () => open(images) : undefined}
+        onClick={hasImage ? () => open(images, piece) : undefined}
         style={{
           position: 'relative',
           cursor: hasImage ? 'none' : 'default',
@@ -409,16 +409,16 @@ function Img({ piece, dim, gIdx }) {
       </div>
 
       {/* Légende — tourne avec l'image */}
-      <div style={{ marginTop: 8, paddingLeft: 3 }}>
+      <div style={{ marginTop: 9, paddingLeft: 3 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: 6, alignItems: 'baseline' }}>
           <span className="serif-display" style={{ fontSize: 17, fontStyle: 'italic' }}>{piece.title}</span>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: 10, letterSpacing: '0.1em', color: 'var(--moss-deep)', whiteSpace: 'nowrap' }}>{piece.year}</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '0.1em', color: 'var(--moss-deep)', whiteSpace: 'nowrap' }}>{piece.year}</span>
         </div>
-        <div style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.12em', color: 'var(--ink-soft)', textTransform: 'uppercase', marginTop: 1 }}>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.12em', color: 'var(--ink-soft)', textTransform: 'uppercase', marginTop: 2 }}>
           {piece.subLabel}
         </div>
         {piece.comment && (
-          <div className="hand" style={{ fontSize: 15, marginTop: 4, color: 'var(--ink-soft)', display: 'inline-block' }}>
+          <div className="hand" style={{ fontSize: 18, marginTop: 5, color: 'var(--ink-soft)', display: 'inline-block' }}>
             ↳ {piece.comment}
           </div>
         )}
@@ -436,11 +436,8 @@ function Img({ piece, dim, gIdx }) {
 function SingleFrame({ src, dim }) {
   const [loaded, setLoaded] = useState(false)
   return (
-    <div style={{
-      width: '100%',
+    <div className="gframe" style={{
       aspectRatio: `${dim.w} / ${dim.h}`,
-      overflow: 'hidden',
-      position: 'relative',
       boxShadow: '0 0 0 1px oklch(0.7 0.04 65 / 0.3)',
     }}>
       {!loaded && <div className="img-shimmer" />}
@@ -483,11 +480,9 @@ function StackedFrame({ images, dim }) {
       ))}
 
       {/* Image principale */}
-      <div style={{
+      <div className="gframe" style={{
         flex: 1, minWidth: 0,
         aspectRatio: `${dim.w} / ${dim.h}`,
-        overflow: 'hidden',
-        position: 'relative',
         boxShadow: '0 0 0 1px oklch(0.7 0.04 65 / 0.45), 0 6px 20px oklch(0.25 0.04 60 / 0.22)',
       }}>
         {!mainLoaded && <div className="img-shimmer" />}

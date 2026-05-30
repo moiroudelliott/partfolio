@@ -415,7 +415,7 @@ function NewPieceForm({ onAdd }) {
 }
 
 // ── Subcategory editor ────────────────────────────────────────────────────────
-function SubEditor({ sub, onChange }) {
+function SubEditor({ sub, onChange, onDelete }) {
   const [open, setOpen] = useState(false)
 
   const update = (pi, updated) => {
@@ -447,7 +447,18 @@ function SubEditor({ sub, onChange }) {
             {sub.pieces.length} pièce{sub.pieces.length !== 1 ? 's' : ''}
           </span>
         </div>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-pale)' }}>{open ? '▲' : '▼'}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: 10, color: 'var(--ink-pale)' }}>{open ? '▲' : '▼'}</span>
+          <button
+            onClick={e => {
+              e.stopPropagation()
+              if (!confirm(`Supprimer la sous-série "${sub.label}" et ses ${sub.pieces.length} pièce${sub.pieces.length !== 1 ? 's' : ''} ?`)) return
+              onDelete()
+            }}
+            style={{ ...S.btn, padding: '2px 8px', color: 'var(--rust)', borderColor: 'oklch(0.78 0.08 38 / 0.35)', fontSize: 10 }}
+            title={`Supprimer "${sub.label}"`}
+          >✕</button>
+        </div>
       </div>
 
       {open && (
@@ -547,21 +558,54 @@ function OeuvresTab({ content, onChange }) {
     setAddingSub(false)
   }
 
+  const [hoveredTab, setHoveredTab] = useState(null)
+
+  const deleteCategory = i => {
+    const label = cats[i].label
+    if (!confirm(`Supprimer la catégorie "${label}" et toutes ses sous-séries ?`)) return
+    const next   = cats.filter((_, j) => j !== i)
+    const newIdx = i < catIdx ? catIdx - 1 : i === catIdx ? Math.min(catIdx, next.length - 1) : catIdx
+    setCategories(next)
+    setCatIdx(newIdx)
+  }
+
+  const deleteSub = si => {
+    const subs = cat.sub.filter((_, i) => i !== si)
+    setCategory(catIdx, { ...cat, sub: subs })
+  }
+
   return (
     <div>
       {/* ── Category tabs + add button ── */}
       <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: 28, borderBottom: '2px solid var(--rule)', gap: 0 }}>
         {cats.map((c, i) => (
-          <button key={c.id} onClick={() => { setCatIdx(i); setAddingSub(false) }} style={{
-            padding: '10px 26px', border: 'none',
-            borderBottom: catIdx === i ? '2px solid var(--ink)' : '2px solid transparent',
-            background: 'transparent', fontFamily: 'var(--serif)', fontSize: 17,
-            cursor: 'pointer', color: catIdx === i ? 'var(--ink)' : 'var(--ink-soft)',
-            marginBottom: -2,
-          }}>{c.label}</button>
+          <div key={c.id} style={{ position: 'relative' }}
+            onMouseEnter={() => setHoveredTab(i)}
+            onMouseLeave={() => setHoveredTab(null)}>
+            <button onClick={() => { setCatIdx(i); setAddingSub(false) }} style={{
+              padding: '10px 26px', border: 'none',
+              borderBottom: catIdx === i ? '2px solid var(--ink)' : '2px solid transparent',
+              background: 'transparent', fontFamily: 'var(--serif)', fontSize: 17,
+              cursor: 'pointer', color: catIdx === i ? 'var(--ink)' : 'var(--ink-soft)',
+              marginBottom: -2,
+            }}>{c.label}</button>
+            {/* ✕ sur chaque onglet, visible au survol */}
+            {hoveredTab === i && cats.length > 1 && (
+              <button
+                onClick={e => { e.stopPropagation(); deleteCategory(i) }}
+                title={`Supprimer "${c.label}"`}
+                style={{
+                  position: 'absolute', top: 4, right: 4,
+                  width: 15, height: 15, border: 'none', padding: 0,
+                  background: 'oklch(0.88 0.04 38 / 0.85)', color: 'var(--rust)',
+                  fontSize: 9, borderRadius: '50%', cursor: 'pointer',
+                  display: 'grid', placeItems: 'center', fontWeight: 700,
+                }}>✕</button>
+            )}
+          </div>
         ))}
 
-        {/* Add category area */}
+        {/* Add category */}
         <div style={{ marginLeft: 8, marginBottom: 4, display: 'flex', alignItems: 'center' }}>
           {addingCat
             ? <NewCategoryForm
@@ -591,6 +635,7 @@ function OeuvresTab({ content, onChange }) {
             const subs = [...cat.sub]; subs[si] = updated
             setCategory(catIdx, { ...cat, sub: subs })
           }}
+          onDelete={() => deleteSub(si)}
         />
       ))}
 

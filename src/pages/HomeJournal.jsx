@@ -39,7 +39,7 @@ export default function HomeJournal({ ui, data, go }) {
 
               <div>
                 {/* Nom — line reveal */}
-                <h1 className="serif-display" style={{ fontSize: 'clamp(72px, 9vw, 136px)', margin: 0, lineHeight: 0.88 }}>
+                <h1 className="serif-display" style={{ fontSize: 'clamp(52px, 6.5vw, 116px)', margin: 0, lineHeight: 0.88 }}>
                   <div style={{ overflow: 'hidden', paddingBottom: '0.28em', marginBottom: '-0.28em' }}>
                     <span style={{ display: 'block', animation: 'hero-line 0.75s cubic-bezier(.22,1,.36,1) 0.15s both' }}>
                       {artist.name.split(' ')[0]}
@@ -124,7 +124,7 @@ export default function HomeJournal({ ui, data, go }) {
               <div className="kicker">§ II · {ab.kicker}</div>
               <div className="kicker">page 02</div>
             </div>
-            <h2 className="serif-display" style={{ fontSize: 84, margin: 0, marginBottom: 40 }}>
+            <h2 className="serif-display" style={{ fontSize: 'clamp(38px, 5vw, 84px)', margin: 0, marginBottom: 40 }}>
               {ab.title}<span style={{ color: 'var(--moss-deep)' }}>.</span>
             </h2>
           </Reveal>
@@ -168,7 +168,7 @@ function SeriesIndex({ ui, data, go }) {
             <div className="kicker">§ I · {ui.categories}</div>
             <div className="kicker">sommaire</div>
           </div>
-          <h2 className="serif-display" style={{ fontSize: 84, margin: 0, marginBottom: 36 }}>{ui.sectionWorks}</h2>
+          <h2 className="serif-display" style={{ fontSize: 'clamp(38px, 5vw, 84px)', margin: 0, marginBottom: 36 }}>{ui.sectionWorks}</h2>
           <hr className="dotted-rule" style={{ marginBottom: 40 }} />
         </Reveal>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 60, alignItems: 'start' }}>
@@ -182,7 +182,7 @@ function SeriesIndex({ ui, data, go }) {
                       onClick={() => go({ kind: 'category', id: c.id })} data-cursor="hover"
                       style={{ display: 'grid', gridTemplateColumns: '54px 1fr auto 90px', gap: 20, alignItems: 'baseline', padding: '22px 0', borderBottom: '1px dashed var(--rule)', transition: 'color 0.3s, padding-left 0.3s, background 0.3s', color: hover === c.id ? 'var(--moss-deep)' : 'var(--ink)', paddingLeft: hover === c.id ? 18 : 0, background: hover === c.id ? 'oklch(0.92 0.04 130 / 0.18)' : 'transparent' }}>
                     <span style={{ fontFamily: 'var(--mono)', fontSize: 13, letterSpacing: '0.12em', color: 'var(--ink-soft)' }}>№ {c.number}</span>
-                    <span className="serif-display" style={{ fontSize: 44, fontStyle: hover === c.id ? 'italic' : 'normal', transition: 'font-style 0.2s' }}>{c.label}</span>
+                    <span className="serif-display" style={{ fontSize: 'clamp(22px, 3vw, 44px)', fontStyle: hover === c.id ? 'italic' : 'normal', transition: 'font-style 0.2s' }}>{c.label}</span>
                     <span style={{ flex: 1, height: 1, borderTop: '1px dotted var(--ink-pale)', margin: '0 12px', alignSelf: 'center', minWidth: 80 }} />
                     <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-soft)', textAlign: 'right' }}>{total} {ui.pieces}</span>
                   </li>
@@ -211,7 +211,7 @@ function SeriesIndex({ ui, data, go }) {
                     const idx = cats.indexOf(c)
                     return (
                       <>
-                        <Placeholder label={c.label.toLowerCase()} code={`PL · ${c.number}`} image={c.cover?.image} tone={tones[idx % tones.length]} ratio="3 / 4" rotate={0} hoverRot={0} tape={false} onClick={c.cover?.image ? () => open([c.cover.image], 0) : null} />
+                        <Placeholder label={c.label.toLowerCase()} code={`PL · ${c.number}`} image={c.cover?.image} tone={tones[idx % tones.length]} ratio="3 / 4" rotate={0} hoverRot={0} tape={false} onClick={c.cover?.image ? () => open([c.cover.image]) : null} />
                         <div className="serif-display" style={{ fontSize: 28, marginTop: 16, fontStyle: 'italic' }}>{c.label}</div>
                         <div style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 4 }}>{c.tagline}</div>
                       </>
