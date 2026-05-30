@@ -1,0 +1,29 @@
+# Dépendances
+node_modules/
+
+# Build Vite
+dist/
+
+# Originaux avant compression (392 MB — sauvegarde locale uniquement)
+public/Oeuvres-originals/
+
+# Archives
+public/*.zip
+
+# Variables d'environnement
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
