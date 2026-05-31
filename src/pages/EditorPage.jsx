@@ -197,14 +197,34 @@ function TextesTab({ content, onChange }) {
         <div>
           <Field label="Accroche (ex : Mes Carnets · 2023—2026)" value={hero.kicker}   onChange={v => setHero('kicker', v)} />
           <Field label="Sous-titre (médiums)"                     value={hero.subtitle} onChange={v => setHero('subtitle', v)} />
+          <Field label="Texte d'intro (hero.sub)"                 value={hero.sub}      onChange={v => setHero('sub', v)} />
+          <Field label="Titre SEO de la page"                     value={hero.title}    onChange={v => setHero('title', v)} />
         </div>
         <ImagePicker label="Image de couverture" ratio="4/5"
           value={hero.cover?.image}
           onChange={v => setHero('cover', { ...(hero.cover || {}), image: v })} />
       </div>
 
+      <Field label="Poème décoratif (une ligne par entrée, séparées par des virgules)"
+        value={(hero.poem || []).join(', ')}
+        onChange={v => setHero('poem', v.split(',').map(s => s.trim()).filter(Boolean))} />
+
+      <div style={{ marginBottom: 16 }}>
+        <span style={S.label}>Annotations de la page d'accueil</span>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 6 }}>
+          {Object.entries(hero.annotations || {}).map(([k, v]) => (
+            <Field key={k} label={k} value={v}
+              onChange={val => setHero('annotations', { ...hero.annotations, [k]: val })} />
+          ))}
+        </div>
+      </div>
+
       {/* ── À propos ── */}
       <Divider title="À propos" />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 12 }}>
+        <Field label="Titre de la section (ex : À propos)" value={about.title}  onChange={v => setAbout('title',  v)} />
+        <Field label="Sous-titre (ex : Qui suis-je ?)"     value={about.kicker} onChange={v => setAbout('kicker', v)} />
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 16 }}>
         <div>
           <Field label="Premier paragraphe"  value={about.paragraphs?.[0]} onChange={v => setAboutP(0, v)} multiline rows={5} />
@@ -215,6 +235,9 @@ function TextesTab({ content, onChange }) {
           <ImagePicker label="Photo portrait" ratio="3/4"
             value={about.portrait?.image}
             onChange={v => setAbout('portrait', { ...(about.portrait || {}), image: v })} />
+          <Field label="Légende du portrait (ex : au musée)"
+            value={about.portrait?.caption}
+            onChange={v => setAbout('portrait', { ...(about.portrait || {}), caption: v })} />
         </div>
       </div>
 
@@ -463,6 +486,13 @@ function SubEditor({ sub, onChange, onDelete }) {
 
       {open && (
         <div>
+          {/* Nom et description de la sous-série */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 16, padding: '12px 14px', borderBottom: '1px solid oklch(0.9 0.02 75)', background: 'oklch(0.975 0.01 80)' }}>
+            <Field label="Nom de la sous-série" value={sub.label}
+              onChange={v => onChange({ ...sub, label: v })} />
+            <Field label="Description (affichée au clic du filtre)" value={sub.note}
+              onChange={v => onChange({ ...sub, note: v })} />
+          </div>
           {sub.pieces.map((piece, pi) => (
             <PieceCard
               key={piece.id}
@@ -619,10 +649,16 @@ function OeuvresTab({ content, onChange }) {
         </div>
       </div>
 
-      {/* ── Category tagline + cover ── */}
+      {/* ── Category tagline + cover + blurb ── */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 24, alignItems: 'start' }}>
-        <Field label="Accroche de la catégorie" value={cat.tagline}
-          onChange={v => setCategory(catIdx, { ...cat, tagline: v })} />
+        <div>
+          <Field label="Nom de la catégorie" value={cat.label}
+            onChange={v => setCategory(catIdx, { ...cat, label: v })} />
+          <Field label="Accroche courte" value={cat.tagline}
+            onChange={v => setCategory(catIdx, { ...cat, tagline: v })} />
+          <Field label="Description (affichée sur la page de la catégorie)" value={cat.blurb}
+            onChange={v => setCategory(catIdx, { ...cat, blurb: v })} multiline rows={4} />
+        </div>
         <ImagePicker label="Image de couverture" ratio="3/4"
           value={cat.cover?.image}
           onChange={v => setCategory(catIdx, { ...cat, cover: { ...(cat.cover || {}), image: v } })} />

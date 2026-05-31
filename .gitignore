@@ -10,6 +10,15 @@ public/Oeuvres-originals/
 # Archives
 public/*.zip
 
+# ── Contenu géré par l'éditeur (modifié sur le serveur) ──────────────────────
+# Ne pas écraser lors d'un git pull côté serveur
+
+# Données CMS — modifiées via /editor
+public/content.json
+
+# Images uploadées via l'éditeur
+public/Oeuvres/Uploads/
+
 # Variables d'environnement
 .env
 .env.local
