@@ -23,7 +23,7 @@
 * { box-sizing: border-box; }
 
 html {
-  overflow-x: hidden; /* bloque la scrollbar horizontale des animations d'entrée */
+  overflow-x: clip; /* clip sans changer le scroll container — préserve scrollIntoView smooth */
 }
 
 html, body {
