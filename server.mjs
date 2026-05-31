@@ -117,7 +117,7 @@ app.use(express.static(PUBLIC))
 app.use(express.static(DIST))
 
 // SPA fallback — toutes les routes renvoient index.html
-app.get('*', (req, res) => {
+app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(DIST, 'index.html'))
 })
 
