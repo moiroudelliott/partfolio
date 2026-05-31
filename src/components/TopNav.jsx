@@ -4,10 +4,30 @@ export function scrollToId(id) {
   window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 60, behavior: 'smooth' })
 }
 
-export default function TopNav({ ui, go, route }) {
+export default function TopNav({ ui, go, route, scrollSection }) {
+  const isHome = route.kind === 'home'
+
+  // Section active : basée sur le scroll (home) ou la route (catégorie)
+  const active = section => {
+    if (section === 'series' && route.kind === 'category') return true
+    if (!isHome) return false
+    if (section === 'home') return scrollSection === 'home' || !scrollSection
+    return scrollSection === section
+  }
+
+  // Clic nav : scroll si déjà sur home, navigate+scroll sinon
+  const nav = scrollId => {
+    if (isHome) {
+      if (scrollId) scrollToId(scrollId)
+      else window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      go({ kind: 'home', scrollTo: scrollId || undefined })
+    }
+  }
+
   return (
     <nav className="nav" style={{ animation: 'hero-bar 0.5s ease both' }}>
-      <div className="mark" data-cursor="hover" onClick={() => go({ kind: 'home' })}>
+      <div className="mark" data-cursor="hover" onClick={() => nav(null)}>
         <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
           <circle cx="18" cy="18" r="16" stroke="var(--ink)" strokeWidth="1"/>
           <path d="M8 24 C 12 14, 18 14, 18 24 C 18 14, 24 14, 28 24" stroke="var(--ink)" strokeWidth="1.2" fill="none" />
@@ -16,13 +36,10 @@ export default function TopNav({ ui, go, route }) {
         <span>Margot Moiroud</span>
       </div>
       <div className="nav-links">
-        <a data-cursor="hover" className={route.kind === 'home' ? 'active' : ''} onClick={() => go({ kind: 'home' })}>Accueil</a>
-        <a data-cursor="hover" className={route.kind === 'category' ? 'active' : ''}
-           onClick={() => route.kind === 'home' ? scrollToId('series') : go({ kind: 'home' })}>
-          {ui.works}
-        </a>
-        <a data-cursor="hover" onClick={() => scrollToId('about')}>{ui.about}</a>
-        <a data-cursor="hover" onClick={() => scrollToId('contact')}>{ui.contact}</a>
+        <a data-cursor="hover" className={active('home')    ? 'active' : ''} onClick={() => nav(null)}     >{ui.home}</a>
+        <a data-cursor="hover" className={active('series')  ? 'active' : ''} onClick={() => nav('series')} >{ui.works}</a>
+        <a data-cursor="hover" className={active('about')   ? 'active' : ''} onClick={() => nav('about')}  >{ui.about}</a>
+        <a data-cursor="hover" className={active('contact') ? 'active' : ''} onClick={() => nav('contact')}>{ui.contact}</a>
       </div>
       <div style={{ width: 110 }} />
     </nav>

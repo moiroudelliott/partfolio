@@ -12,14 +12,53 @@ function toBase64(file) {
   })
 }
 
+// Compression dans le navigateur avant envoi : max 2000px, JPEG 82%
+// → réduit un 8 Mo en ~300 Ko et évite les limites des proxies (nginx 1 Mo par défaut)
+function compressInBrowser(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      try {
+        const MAX = 2000
+        const ratio = Math.min(MAX / img.width, MAX / img.height, 1)
+        const canvas = document.createElement('canvas')
+        canvas.width  = Math.round(img.width  * ratio)
+        canvas.height = Math.round(img.height * ratio)
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+        resolve(canvas.toDataURL('image/jpeg', 0.82))
+      } catch (e) { reject(e) }
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('format non supporté')) }
+    img.src = url
+  })
+}
+
 async function uploadImage(file, folder = 'Oeuvres/Uploads') {
-  const data = await toBase64(file)
+  // Compresser côté navigateur ; fallback sur base64 brut (ex : HEIC sur certains navigateurs)
+  let data
+  try   { data = await compressInBrowser(file) }
+  catch { data = await toBase64(file) }
+
   const res  = await fetch('/api/upload', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: file.name, folder, data }),
   })
-  const json = await res.json()
+
+  // Lire le corps en texte d'abord — si c'est du HTML (erreur proxy/nginx) on donne un message clair
+  const text = await res.text()
+  let json
+  try { json = JSON.parse(text) }
+  catch {
+    throw new Error(
+      res.status === 413
+        ? `Image trop lourde pour le serveur (${Math.round(data.length / 1024)} Ko). Réduisez la taille du fichier.`
+        : `Erreur serveur (${res.status}) — vérifiez que npm start est lancé.`
+    )
+  }
+
   if (!json.ok) throw new Error(json.error || 'Erreur upload')
   return json // { path, dim }
 }

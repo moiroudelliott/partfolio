@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { LightboxProvider } from './components/Lightbox.jsx'
 import CustomCursor from './components/CustomCursor.jsx'
-import TopNav from './components/TopNav.jsx'
+import TopNav, { scrollToId } from './components/TopNav.jsx'
 import Footer from './components/Footer.jsx'
 import HomeJournal from './pages/HomeJournal.jsx'
 import CategoryPage from './pages/CategoryPage.jsx'
@@ -19,9 +19,11 @@ function shade(hex, amount) {
 }
 
 function Portfolio() {
-  const [content, setContent] = useState(null)
-  const [error, setError]     = useState(null)
-  const [route, setRoute]     = useState({ kind: 'home' })
+  const [content, setContent]             = useState(null)
+  const [error, setError]                 = useState(null)
+  const [route, setRoute]                 = useState({ kind: 'home' })
+  const [scrollSection, setScrollSection] = useState('home')
+  const pendingScroll                     = useRef(null)
 
   useEffect(() => {
     fetch('/content.json')
@@ -37,9 +39,36 @@ function Portfolio() {
     document.documentElement.style.setProperty('--moss-pale', shade(ACCENT, 0.28))
   }, [])
 
+  // Suivi de la section visible au scroll sur la page d'accueil
+  useEffect(() => {
+    if (route.kind !== 'home') { setScrollSection(null); return }
+    const check = () => {
+      for (const id of ['contact', 'about', 'series']) {
+        const el = document.getElementById(id)
+        if (el && el.getBoundingClientRect().top <= 100) { setScrollSection(id); return }
+      }
+      setScrollSection('home')
+    }
+    window.addEventListener('scroll', check, { passive: true })
+    check()
+    return () => window.removeEventListener('scroll', check)
+  }, [route])
+
+  // Scroll vers la cible après navigation vers home
+  useEffect(() => {
+    if (route.kind === 'home' && pendingScroll.current) {
+      const target = pendingScroll.current
+      pendingScroll.current = null
+      requestAnimationFrame(() => requestAnimationFrame(() => scrollToId(target)))
+    }
+  }, [route])
+
   const go = (r) => {
     setRoute(r)
-    if (r.kind === 'home') window.scrollTo({ top: 0, behavior: 'auto' })
+    if (r.kind === 'home') {
+      window.scrollTo({ top: 0, behavior: 'auto' })
+      if (r.scrollTo) pendingScroll.current = r.scrollTo
+    }
   }
 
   if (error) return (
@@ -60,7 +89,7 @@ function Portfolio() {
   return (
     <LightboxProvider>
       <CustomCursor />
-      <TopNav ui={content.ui} go={go} route={route} />
+      <TopNav ui={content.ui} go={go} route={route} scrollSection={scrollSection} />
       <main>
         <div key={`${route.kind}-${route.id ?? ''}`} className="page-enter">
           {route.kind === 'home'     && <HomeJournal ui={content.ui} data={content} go={go} />}
