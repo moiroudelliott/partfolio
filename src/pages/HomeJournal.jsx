@@ -14,7 +14,7 @@ export default function HomeJournal({ ui, data, go }) {
 
   return (
     <div className="paper" style={{ position: 'relative', overflow: 'hidden' }}>
-      <FloatingMotifs density={0.5} />
+      <FloatingMotifs density={0.5} motifs={data.motifs} />
 
       {/* HERO */}
       <section className="sec-hero" style={{ padding: '40px 56px 60px', position: 'relative' }}>
@@ -24,7 +24,7 @@ export default function HomeJournal({ ui, data, go }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.2em', color: 'var(--ink-soft)', textTransform: 'uppercase', paddingBottom: 14, borderBottom: '1px solid var(--rule)', marginBottom: 56, animation: 'hero-bar 0.55s ease both' }}>
             <span>{hero.kicker}</span>
             <span>{artist.location}</span>
-            <span>MMXXVI</span>
+            <span>{ui.year}</span>
           </div>
 
           {/* Corps : texte gauche, cover droite */}
@@ -197,12 +197,12 @@ function SeriesIndex({ ui, data, go }) {
             <div style={{ position: 'sticky', top: 90 }}>
               <div style={{ padding: 10, background: 'var(--paper-warm)', border: '1px solid var(--rule)' }}>
                 <div style={{ padding: 16, background: 'oklch(0.92 0.025 80 / 0.6)', border: '1px solid var(--rule)' }}>
-                  <div className="kicker" style={{ marginBottom: 14 }}>· planche ·</div>
+                  <div className="kicker" style={{ marginBottom: 14 }}>· {ui.planche} ·</div>
 
                   {hover === null ? (
                     <>
                       <div style={{ aspectRatio: '3 / 4', background: 'var(--paper-deep)', border: '1px dashed oklch(0.72 0.03 68)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-                        <span className="hand" style={{ fontSize: 46, color: 'var(--ink-soft)', lineHeight: 1.25, transform: 'rotate(-6deg)', display: 'block', userSelect: 'none', textAlign: 'center', padding: '0 16px', opacity: 0.65 }}>{ui.hoverHint}</span>
+                        <span className="hand" style={{ fontSize: 46, color: 'var(--ink-soft)', lineHeight: 1.25, transform: 'rotate(-6deg)', display: 'block', userSelect: 'none', textAlign: 'center', padding: '0 16px', opacity: 0.65 }}>{ui.hoverHint ?? 'survolez une série…'}</span>
                       </div>
                       {(hasLabel || hasTagline) && (
                         <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>

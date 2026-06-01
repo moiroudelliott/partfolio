@@ -42,7 +42,7 @@ export default function CategoryPage({ ui, data, go, route }) {
 
   return (
     <div className="paper" style={{ position: 'relative', overflow: 'hidden' }}>
-      <FloatingMotifs density={0.4} />
+      <FloatingMotifs density={0.4} motifs={data.motifs} />
 
       {/* Fil d'Ariane */}
       <section className="sec-crumb" style={{ padding: '12px 56px 0', animation: 'hero-bar 0.45s ease both' }}>
@@ -82,7 +82,7 @@ export default function CategoryPage({ ui, data, go, route }) {
               {cat.blurb}
             </p>
             <div style={{ marginTop: 28, animation: 'hero-up 0.6s cubic-bezier(.22,1,.36,1) 0.68s both' }}>
-              <span className="stamp">{cat.number} · M·M · MMXXVI</span>
+              <span className="stamp">{cat.number} · {ui.stamp}</span>
             </div>
           </div>
           <div className="r-cat-cover" style={{ paddingTop: 30, animation: 'hero-cover 1.0s cubic-bezier(.22,1,.36,1) 0.15s both' }}>

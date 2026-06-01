@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Leaf, LeafB, LeafC, Butterfly, ButterflyB, ButterflyC } from '../components/icons.jsx'
 
 const PWD = 'hubble01'
 
@@ -104,6 +105,59 @@ function Field({ label, value, onChange, multiline, rows = 4, placeholder }) {
         : <input type="text" value={value ?? ''} onChange={e => onChange(e.target.value)}
             placeholder={placeholder} style={S.input} />
       }
+    </label>
+  )
+}
+
+function ImagesListPicker({ values = [], onChange, ratio = '1/1', folder = 'Oeuvres/Uploads' }) {
+  const [uploading, setUploading] = useState(false)
+  const add = async file => {
+    setUploading(true)
+    try { const j = await uploadImage(file, folder); onChange([...values, j.path]) }
+    catch (e) { alert('Erreur : ' + e.message) }
+    setUploading(false)
+  }
+  const remove = i => onChange(values.filter((_, j) => j !== i))
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 6 }}>
+      {values.map((src, i) => (
+        <div key={i} style={{ position: 'relative', flexShrink: 0 }}>
+          <img src={src} style={{ width: 64, aspectRatio: ratio, objectFit: 'cover', border: '1px solid var(--rule)', display: 'block' }} />
+          <button onClick={() => remove(i)} style={{ position: 'absolute', top: 2, right: 2, width: 16, height: 16, border: 'none', background: 'oklch(0.2 0.01 60/0.8)', color: 'white', fontSize: 9, cursor: 'pointer', display: 'grid', placeItems: 'center', padding: 0 }}>✕</button>
+        </div>
+      ))}
+      <label style={{ width: 64, aspectRatio: ratio, border: '1px dashed var(--rule)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'var(--paper-warm)', fontSize: 22, color: 'var(--ink-pale)' }}>
+        {uploading ? '…' : '+'}
+        <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => e.target.files[0] && add(e.target.files[0])} />
+      </label>
+    </div>
+  )
+}
+
+function CountSlider({ label, value, onChange, min = 0, max = 12 }) {
+  const v = value ?? Math.round((min + max) / 2)
+  return (
+    <label style={{ display: 'block', marginBottom: 8 }}>
+      <span style={S.label}>{label}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 4 }}>
+        <input type="range" min={min} max={max} value={v} onChange={e => onChange(Number(e.target.value))}
+          style={{ flex: 1, accentColor: 'var(--moss-deep)', cursor: 'pointer' }} />
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 14, minWidth: 22, textAlign: 'right' }}>{v}</span>
+      </div>
+    </label>
+  )
+}
+
+function ColorField({ label, value, onChange }) {
+  return (
+    <label style={{ display: 'block', marginBottom: 16 }}>
+      <span style={S.label}>{label}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
+        <input type="color" value={value ?? '#5E7A4A'} onChange={e => onChange(e.target.value)}
+          style={{ width: 44, height: 34, padding: 2, border: '1px solid var(--rule)', cursor: 'pointer', background: 'white', flexShrink: 0 }} />
+        <input type="text" value={value ?? '#5E7A4A'} onChange={e => onChange(e.target.value)}
+          style={{ ...S.input, width: 110 }} />
+      </div>
     </label>
   )
 }
@@ -312,6 +366,91 @@ function TextesTab({ content, onChange }) {
         <Field label="Suivez-moi"          value={ui.followMe}    onChange={v => setUi('followMe', v)} />
         <Field label="Colophon"            value={ui.colophon}    onChange={v => setUi('colophon', v)} />
       </div>
+
+      {/* ── Apparence ── */}
+      <Divider title="Apparence" />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+        <ColorField label="Couleur d'accent" value={ui.accentColor} onChange={v => setUi('accentColor', v)} />
+        <Field label="Année (ex : MMXXVI)"         value={ui.year}    onChange={v => setUi('year', v)} />
+        <Field label="Tampon catégorie"            value={ui.stamp}   onChange={v => setUi('stamp', v)} />
+        <Field label='Label panneau "planche"'     value={ui.planche} onChange={v => setUi('planche', v)} />
+      </div>
+
+    </div>
+  )
+}
+
+// ── Motifs tab ────────────────────────────────────────────────────────────────
+function VariantCard({ label, enabled, onToggle, children }) {
+  return (
+    <div style={{ border: `1px solid ${enabled ? 'var(--moss)' : 'var(--rule)'}`, background: enabled ? 'oklch(0.92 0.04 130 / 0.12)' : 'var(--paper-warm)', transition: 'border-color 0.2s, background 0.2s' }}>
+      <div style={{ padding: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 110, opacity: enabled ? 1 : 0.3, transition: 'opacity 0.2s' }}>
+        {children}
+      </div>
+      <div style={{ borderTop: '1px solid var(--rule)', padding: '8px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--ink-soft)' }}>{label}</span>
+        <button onClick={onToggle} style={{
+          ...S.btn, padding: '3px 10px', fontSize: 9,
+          background: enabled ? 'var(--moss-deep)' : 'transparent',
+          color: enabled ? 'var(--paper-cream)' : 'var(--ink-pale)',
+          borderColor: enabled ? 'var(--moss-deep)' : 'var(--rule)',
+        }}>
+          {enabled ? '✓ actif' : 'désactivé'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function MotifsTab({ content, onChange }) {
+  const motifs = content.motifs || {}
+  const set    = (k, v) => onChange({ ...content, motifs: { ...motifs, [k]: v } })
+  const toggle = k => set(k, motifs[k] === false ? true : false)
+
+  const leafImgs = motifs.leafImages || []
+  const buttImgs = motifs.butterflyImages || []
+
+  return (
+    <div style={{ maxWidth: 720 }}>
+
+      {/* ── Feuilles ── */}
+      <Divider title="Feuilles" />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
+        <VariantCard label="Variante A" enabled={motifs.leafA !== false} onToggle={() => toggle('leafA')}>
+          <Leaf size={56} hue={135} />
+        </VariantCard>
+        <VariantCard label="Variante B" enabled={motifs.leafB !== false} onToggle={() => toggle('leafB')}>
+          <LeafB size={56} hue={135} />
+        </VariantCard>
+        <VariantCard label="Variante C" enabled={motifs.leafC !== false} onToggle={() => toggle('leafC')}>
+          <LeafC size={52} hue={135} />
+        </VariantCard>
+      </div>
+      <div style={{ marginBottom: 8 }}>
+        <span style={S.label}>Images personnalisées (toutes ajoutées au pool)</span>
+        <ImagesListPicker values={leafImgs} onChange={v => set('leafImages', v)} ratio="3/4" />
+      </div>
+      <CountSlider label="Nombre de feuilles" value={motifs.leafCount ?? 5} onChange={v => set('leafCount', v)} min={0} max={12} />
+
+      {/* ── Papillons ── */}
+      <Divider title="Papillons" />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16, marginBottom: 20 }}>
+        <VariantCard label="Variante A" enabled={motifs.butterflyA !== false} onToggle={() => toggle('butterflyA')}>
+          <Butterfly size={52} />
+        </VariantCard>
+        <VariantCard label="Variante B" enabled={motifs.butterflyB !== false} onToggle={() => toggle('butterflyB')}>
+          <ButterflyB size={52} />
+        </VariantCard>
+        <VariantCard label="Variante C" enabled={motifs.butterflyC !== false} onToggle={() => toggle('butterflyC')}>
+          <ButterflyC size={52} />
+        </VariantCard>
+      </div>
+      <div style={{ marginBottom: 8 }}>
+        <span style={S.label}>Images personnalisées (toutes ajoutées au pool)</span>
+        <ImagesListPicker values={buttImgs} onChange={v => set('butterflyImages', v)} ratio="4/3" />
+      </div>
+      <CountSlider label="Nombre de papillons posés" value={motifs.butterflyCount ?? 3} onChange={v => set('butterflyCount', v)} min={0} max={10} />
+      <CountSlider label="Nombre de papillons volants (traversent l'écran)" value={motifs.flyerCount ?? 3} onChange={v => set('flyerCount', v)} min={0} max={6} />
 
     </div>
   )
@@ -824,7 +963,7 @@ function Editor() {
 
       {/* ── Tab bar ── */}
       <div style={{ borderBottom: '1px solid var(--rule)', padding: '0 36px', background: 'var(--paper-warm)' }}>
-        {[['artiste', 'Artiste'], ['textes', 'Textes'], ['oeuvres', 'Œuvres']].map(([id, label]) => (
+        {[['artiste', 'Artiste'], ['textes', 'Textes'], ['oeuvres', 'Œuvres'], ['motifs', 'Motifs']].map(([id, label]) => (
           <button key={id} onClick={() => setTab(id)} style={{
             padding: '11px 22px', border: 'none',
             borderBottom: tab === id ? '2px solid var(--ink)' : '2px solid transparent',
@@ -840,6 +979,7 @@ function Editor() {
         {tab === 'artiste' && <ArtistTab  content={content} onChange={setContent} />}
         {tab === 'textes'  && <TextesTab  content={content} onChange={setContent} />}
         {tab === 'oeuvres' && <OeuvresTab content={content} onChange={setContent} />}
+        {tab === 'motifs'  && <MotifsTab  content={content} onChange={setContent} />}
       </div>
     </div>
   )

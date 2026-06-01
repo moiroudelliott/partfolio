@@ -67,6 +67,28 @@ export const Leaf = ({ size = 60, hue = 135 }) => (
   </svg>
 )
 
+export const LeafC = ({ size = 60, hue = 135 }) => (
+  <svg width={size} height={size * 1.2} viewBox="0 0 60 72" fill="none">
+    <path d="M30 68 C 30 52, 20 46, 14 36 C 8 26, 10 12, 18 8 C 22 7, 26 12, 30 14 C 34 12, 38 7, 42 8 C 50 12, 52 26, 46 36 C 40 46, 30 52, 30 68 Z"
+      fill={`oklch(0.44 0.10 ${hue} / 0.62)`} stroke={`oklch(0.28 0.07 ${hue})`} strokeWidth="0.8" />
+    <path d="M30 14 L 30 66" stroke={`oklch(0.26 0.07 ${hue})`} strokeWidth="0.9" fill="none" />
+    <path d="M30 32 C 22 28, 16 20, 16 12 M30 32 C 38 28, 44 20, 44 12"
+      stroke={`oklch(0.27 0.07 ${hue} / 0.6)`} strokeWidth="0.55" fill="none" />
+    <path d="M30 50 C 24 46, 20 40, 18 34 M30 50 C 36 46, 40 40, 42 34"
+      stroke={`oklch(0.27 0.07 ${hue} / 0.45)`} strokeWidth="0.45" fill="none" />
+  </svg>
+)
+
+export const LeafB = ({ size = 60, hue = 135 }) => (
+  <svg width={size} height={size * 1.1} viewBox="0 0 60 66" fill="none">
+    <path d="M30 6 C 8 10, 4 28, 8 44 C 12 58, 22 64, 30 64 C 38 64, 48 58, 52 44 C 56 28, 52 10, 30 6 Z"
+      fill={`oklch(0.50 0.08 ${hue} / 0.60)`} stroke={`oklch(0.28 0.07 ${hue})`} strokeWidth="0.8" />
+    <path d="M30 8 L 30 62" stroke={`oklch(0.26 0.07 ${hue})`} strokeWidth="0.9" fill="none" />
+    <path d="M30 26 C 18 24, 10 32, 8 42 M30 26 C 42 24, 50 32, 52 42 M30 44 C 20 42, 14 50, 12 58 M30 44 C 40 42, 46 50, 48 58"
+      stroke={`oklch(0.27 0.07 ${hue} / 0.55)`} strokeWidth="0.5" fill="none" />
+  </svg>
+)
+
 export const Butterfly = ({ size = 44 }) => (
   <svg width={size} height={size * 0.9} viewBox="0 0 54 48" fill="none">
     <path d="M27 24 C 14 6, 2 10, 4 22 C 6 34, 20 32, 27 24 Z"
@@ -85,6 +107,44 @@ export const Butterfly = ({ size = 44 }) => (
       stroke="oklch(0.22 0.03 40)" strokeWidth="0.7" fill="none" />
     <circle cx="18" cy="2" r="1.2" fill="oklch(0.22 0.03 40)" />
     <circle cx="36" cy="2" r="1.2" fill="oklch(0.22 0.03 40)" />
+  </svg>
+)
+
+export const ButterflyC = ({ size = 44 }) => (
+  <svg width={size * 1.1} height={size} viewBox="0 0 60 54" fill="none">
+    <path d="M30 26 C 20 10, 4 12, 4 22 C 4 30, 16 34, 30 26 Z"
+      fill="oklch(0.46 0.14 55 / 0.68)" stroke="oklch(0.28 0.06 55)" strokeWidth="0.7" />
+    <path d="M30 26 C 40 10, 56 12, 56 22 C 56 30, 44 34, 30 26 Z"
+      fill="oklch(0.46 0.14 55 / 0.68)" stroke="oklch(0.28 0.06 55)" strokeWidth="0.7" />
+    <path d="M30 26 C 18 34, 10 40, 12 46 C 13 50, 18 50, 20 46 L 16 54"
+      fill="oklch(0.52 0.12 55 / 0.58)" stroke="oklch(0.28 0.06 55)" strokeWidth="0.65" />
+    <path d="M30 26 C 42 34, 50 40, 48 46 C 47 50, 42 50, 40 46 L 44 54"
+      fill="oklch(0.52 0.12 55 / 0.58)" stroke="oklch(0.28 0.06 55)" strokeWidth="0.65" />
+    <circle cx="11" cy="21" r="2.5" fill="oklch(0.82 0.08 80 / 0.55)" />
+    <circle cx="49" cy="21" r="2.5" fill="oklch(0.82 0.08 80 / 0.55)" />
+    <ellipse cx="30" cy="26" rx="1.5" ry="10" fill="oklch(0.22 0.03 55)" />
+    <circle cx="30" cy="16" r="1.8" fill="oklch(0.22 0.03 55)" />
+    <path d="M29 16 C 26 12, 22 8, 20 5 M31 16 C 34 12, 38 8, 40 5"
+      stroke="oklch(0.22 0.03 55)" strokeWidth="0.7" fill="none" />
+  </svg>
+)
+
+export const ButterflyB = ({ size = 44 }) => (
+  <svg width={size * 1.2} height={size * 0.75} viewBox="0 0 65 40" fill="none">
+    <path d="M32 22 C 24 8, 6 6, 3 16 C 1 24, 10 32, 32 22 Z"
+      fill="oklch(0.50 0.09 220 / 0.62)" stroke="oklch(0.28 0.06 220)" strokeWidth="0.7" />
+    <path d="M32 22 C 40 8, 58 6, 61 16 C 63 24, 54 32, 32 22 Z"
+      fill="oklch(0.50 0.09 220 / 0.62)" stroke="oklch(0.28 0.06 220)" strokeWidth="0.7" />
+    <path d="M32 22 C 20 28, 12 34, 15 38 C 18 40, 26 36, 32 22 Z"
+      fill="oklch(0.56 0.07 220 / 0.52)" stroke="oklch(0.28 0.06 220)" strokeWidth="0.6" />
+    <path d="M32 22 C 44 28, 52 34, 49 38 C 46 40, 38 36, 32 22 Z"
+      fill="oklch(0.56 0.07 220 / 0.52)" stroke="oklch(0.28 0.06 220)" strokeWidth="0.6" />
+    <path d="M30 14 C 26 10, 22 6, 20 3 M34 14 C 38 10, 42 6, 44 3"
+      stroke="oklch(0.22 0.03 220)" strokeWidth="0.7" fill="none" />
+    <circle cx="20" cy="3" r="1.2" fill="oklch(0.22 0.03 220)" />
+    <circle cx="44" cy="3" r="1.2" fill="oklch(0.22 0.03 220)" />
+    <ellipse cx="32" cy="22" rx="1.5" ry="9" fill="oklch(0.22 0.03 220)" />
+    <circle cx="32" cy="13" r="1.8" fill="oklch(0.22 0.03 220)" />
   </svg>
 )
 

@@ -7,8 +7,7 @@ import HomeJournal from './pages/HomeJournal.jsx'
 import CategoryPage from './pages/CategoryPage.jsx'
 import EditorPage from './pages/EditorPage.jsx'
 
-// Accent vert fixe
-const ACCENT = '#5E7A4A'
+const DEFAULT_ACCENT = '#5E7A4A'
 
 function shade(hex, amount) {
   const h = hex.replace('#', '')
@@ -32,12 +31,13 @@ function Portfolio() {
       .catch(err => setError(String(err)))
   }, [])
 
-  // Applique les variables CSS de couleur une seule fois
+  // Applique les variables CSS de couleur (mise à jour si accentColor change)
   useEffect(() => {
-    document.documentElement.style.setProperty('--moss',      ACCENT)
-    document.documentElement.style.setProperty('--moss-deep', shade(ACCENT, -0.18))
-    document.documentElement.style.setProperty('--moss-pale', shade(ACCENT, 0.28))
-  }, [])
+    const accent = content?.ui?.accentColor || DEFAULT_ACCENT
+    document.documentElement.style.setProperty('--moss',      accent)
+    document.documentElement.style.setProperty('--moss-deep', shade(accent, -0.18))
+    document.documentElement.style.setProperty('--moss-pale', shade(accent, 0.28))
+  }, [content?.ui?.accentColor])
 
   // Suivi de la section visible au scroll sur la page d'accueil
   useEffect(() => {

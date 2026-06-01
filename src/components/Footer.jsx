@@ -29,7 +29,7 @@ export default function Footer({ ui, data }) {
       <div className="wrap" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.14em', color: 'var(--ink-soft)', textTransform: 'uppercase' }}>
         <span>© {new Date().getFullYear()} · {ar.name}</span>
         <span>{ui.colophon}</span>
-        <span>v.MMXXVI · {ar.location}</span>
+        <span>v.{ui.year} · {ar.location}</span>
       </div>
     </footer>
   )
