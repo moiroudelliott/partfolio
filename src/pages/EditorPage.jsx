@@ -216,9 +216,11 @@ function TextesTab({ content, onChange }) {
   const hero    = content.hero
   const about   = content.about
   const contact = content.contact
+  const ui      = content.ui || {}
   const setHero    = (k, v) => onChange({ ...content, hero:    { ...hero,    [k]: v } })
   const setAbout   = (k, v) => onChange({ ...content, about:   { ...about,   [k]: v } })
   const setContact = (k, v) => onChange({ ...content, contact: { ...contact, [k]: v } })
+  const setUi      = (k, v) => onChange({ ...content, ui:      { ...ui,      [k]: v } })
   const setAboutP  = (i, v) => { const p = [...(about.paragraphs || [])]; p[i] = v; setAbout('paragraphs', p) }
 
   const setInlineImg = (i, v) => {
@@ -234,28 +236,14 @@ function TextesTab({ content, onChange }) {
       <Divider title="Page d'accueil" />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
         <div>
+          <Field label="Bouton principal (ex : Découvrir)"        value={ui.enter}     onChange={v => setUi('enter', v)} />
+          <Field label="Invite séries (ex : survolez une série…)" value={ui.hoverHint} onChange={v => setUi('hoverHint', v)} />
           <Field label="Accroche (ex : Mes Carnets · 2023—2026)" value={hero.kicker}   onChange={v => setHero('kicker', v)} />
           <Field label="Sous-titre (médiums)"                     value={hero.subtitle} onChange={v => setHero('subtitle', v)} />
-          <Field label="Texte d'intro (hero.sub)"                 value={hero.sub}      onChange={v => setHero('sub', v)} />
-          <Field label="Titre SEO de la page"                     value={hero.title}    onChange={v => setHero('title', v)} />
         </div>
         <ImagePicker label="Image de couverture" ratio="4/5"
           value={hero.cover?.image}
           onChange={v => setHero('cover', { ...(hero.cover || {}), image: v })} />
-      </div>
-
-      <Field label="Poème décoratif (une ligne par entrée, séparées par des virgules)"
-        value={(hero.poem || []).join(', ')}
-        onChange={v => setHero('poem', v.split(',').map(s => s.trim()).filter(Boolean))} />
-
-      <div style={{ marginBottom: 16 }}>
-        <span style={S.label}>Annotations de la page d'accueil</span>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 6 }}>
-          {Object.entries(hero.annotations || {}).map(([k, v]) => (
-            <Field key={k} label={k} value={v}
-              onChange={val => setHero('annotations', { ...hero.annotations, [k]: val })} />
-          ))}
-        </div>
       </div>
 
       {/* ── À propos ── */}
@@ -303,6 +291,26 @@ function TextesTab({ content, onChange }) {
         <ImagePicker label="Photo / image contact"
           value={contact.studioImage?.image}
           onChange={v => setContact('studioImage', { ...(contact.studioImage || {}), image: v })} />
+      </div>
+
+      {/* ── Navigation & libellés ── */}
+      <Divider title="Navigation & libellés" />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <Field label="Accueil"             value={ui.home}        onChange={v => setUi('home', v)} />
+        <Field label="Œuvres"              value={ui.works}       onChange={v => setUi('works', v)} />
+        <Field label="À propos"            value={ui.about}       onChange={v => setUi('about', v)} />
+        <Field label="Contact"             value={ui.contact}     onChange={v => setUi('contact', v)} />
+        <Field label="Retour à l'accueil"  value={ui.backHome}    onChange={v => setUi('backHome', v)} />
+        <Field label="Titre section séries" value={ui.sectionWorks} onChange={v => setUi('sectionWorks', v)} />
+        <Field label="Catégories"          value={ui.categories}  onChange={v => setUi('categories', v)} />
+        <Field label="Série (détail)"      value={ui.series}      onChange={v => setUi('series', v)} />
+        <Field label="Sous-séries"         value={ui.subcategories} onChange={v => setUi('subcategories', v)} />
+        <Field label="Toutes les œuvres"   value={ui.allWorks}    onChange={v => setUi('allWorks', v)} />
+        <Field label="Pièces (compteur)"   value={ui.pieces}      onChange={v => setUi('pieces', v)} />
+        <Field label="Série suivante"      value={ui.nextSeries}  onChange={v => setUi('nextSeries', v)} />
+        <Field label="Série précédente"    value={ui.prevSeries}  onChange={v => setUi('prevSeries', v)} />
+        <Field label="Suivez-moi"          value={ui.followMe}    onChange={v => setUi('followMe', v)} />
+        <Field label="Colophon"            value={ui.colophon}    onChange={v => setUi('colophon', v)} />
       </div>
 
     </div>
