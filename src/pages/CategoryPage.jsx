@@ -45,7 +45,7 @@ export default function CategoryPage({ ui, data, go, route }) {
       <FloatingMotifs density={0.4} />
 
       {/* Fil d'Ariane */}
-      <section style={{ padding: '12px 56px 0', animation: 'hero-bar 0.45s ease both' }}>
+      <section className="sec-crumb" style={{ padding: '12px 56px 0', animation: 'hero-bar 0.45s ease both' }}>
         <div className="wrap" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <button onClick={() => go({ kind: 'home' })} data-cursor="hover" className="btn-ink" style={{ fontSize: 15 }}>
             <span className="ring" style={{ width: 44, height: 44 }}>
@@ -60,8 +60,8 @@ export default function CategoryPage({ ui, data, go, route }) {
       </section>
 
       {/* HERO */}
-      <section style={{ padding: '50px 56px 50px', position: 'relative' }}>
-        <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 60, alignItems: 'start' }}>
+      <section className="sec-cat" style={{ padding: '50px 56px 50px', position: 'relative' }}>
+        <div className="wrap r-cat" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 60, alignItems: 'start' }}>
           <div>
             <div className="kicker" style={{ marginBottom: 14, animation: 'hero-up 0.6s cubic-bezier(.22,1,.36,1) 0.1s both' }}>
               § {cat.number} · {ui.series}
@@ -85,14 +85,14 @@ export default function CategoryPage({ ui, data, go, route }) {
               <span className="stamp">{cat.number} · M·M · MMXXVI</span>
             </div>
           </div>
-          <div style={{ paddingTop: 30, animation: 'hero-cover 1.0s cubic-bezier(.22,1,.36,1) 0.15s both' }}>
+          <div className="r-cat-cover" style={{ paddingTop: 30, animation: 'hero-cover 1.0s cubic-bezier(.22,1,.36,1) 0.15s both' }}>
             <CoverImage cat={cat} idx={idx} />
           </div>
         </div>
       </section>
 
       {/* Filtres sous-séries */}
-      <section style={{ padding: '40px 56px 30px' }}>
+      <section className="sec-filter" style={{ padding: '40px 56px 30px' }}>
         <div className="wrap">
           <Reveal>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 24, marginBottom: 20, borderTop: '1px solid var(--ink)', borderBottom: '1px solid var(--ink)', padding: '18px 0' }}>
@@ -114,17 +114,17 @@ export default function CategoryPage({ ui, data, go, route }) {
       </section>
 
       {/* Galerie — layout justified (aucun recadrage) */}
-      <section style={{ padding: '20px 56px 60px' }}>
+      <section className="sec-gallery" style={{ padding: '20px 56px 60px' }}>
         <div className="wrap">
           <JustifiedGallery pieces={filtered} />
         </div>
       </section>
 
       {/* Prev / Next */}
-      <section style={{ padding: '40px 56px 80px' }}>
+      <section className="sec-pager" style={{ padding: '40px 56px 80px' }}>
         <div className="wrap">
           <hr className="dotted-rule" style={{ marginBottom: 30 }} />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60 }}>
+          <div className="r-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60 }}>
             <CatPager dir="prev" cat={prev} ui={ui} go={go} />
             <CatPager dir="next" cat={next} ui={ui} go={go} />
           </div>

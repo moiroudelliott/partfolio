@@ -17,7 +17,7 @@ export default function HomeJournal({ ui, data, go }) {
       <FloatingMotifs density={0.5} />
 
       {/* HERO */}
-      <section style={{ padding: '40px 56px 60px', position: 'relative' }}>
+      <section className="sec-hero" style={{ padding: '40px 56px 60px', position: 'relative' }}>
         <div className="wrap">
 
           {/* Barre folio */}
@@ -28,7 +28,7 @@ export default function HomeJournal({ ui, data, go }) {
           </div>
 
           {/* Corps : texte gauche, cover droite */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
+          <div className="r-hero" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 72, alignItems: 'center' }}>
 
             {/* ── Gauche ── */}
             <div style={{ display: 'grid', gridTemplateColumns: '36px 1fr', gap: 24, alignItems: 'start' }}>
@@ -117,7 +117,7 @@ export default function HomeJournal({ ui, data, go }) {
       <SeriesIndex ui={ui} data={data} go={go} />
 
       {/* ABOUT */}
-      <section id="about" style={{ padding: '90px 56px', position: 'relative' }}>
+      <section id="about" className="sec-body" style={{ padding: '90px 56px', position: 'relative' }}>
         <div className="wrap" style={{ maxWidth: 1100 }}>
           <Reveal>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 30 }}>
@@ -128,7 +128,7 @@ export default function HomeJournal({ ui, data, go }) {
               {ab.title}<span style={{ color: 'var(--moss-deep)' }}>.</span>
             </h2>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: 56 }}>
+          <div className="r-about" style={{ display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: 56 }}>
             <Reveal from="left">
               <p style={{ fontSize: 18, lineHeight: 1.75, marginTop: 0 }}><span className="drop">{ab.paragraphs[0][0]}</span>{ab.paragraphs[0].slice(1)}</p>
               <div style={{ marginTop: 30 }}>
@@ -163,7 +163,7 @@ function SeriesIndex({ ui, data, go }) {
   const hasTagline = cats.some(c => c.tagline?.trim())
 
   return (
-    <section id="series" style={{ padding: '90px 56px 120px', position: 'relative' }}>
+    <section id="series" className="sec-body" style={{ padding: '90px 56px 120px', position: 'relative' }}>
       <div className="wrap" style={{ maxWidth: 1100 }}>
         <Reveal>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 20 }}>
@@ -173,7 +173,7 @@ function SeriesIndex({ ui, data, go }) {
           <h2 className="serif-display" style={{ fontSize: 'clamp(38px, 5vw, 84px)', margin: 0, marginBottom: 36 }}>{ui.sectionWorks}</h2>
           <hr className="dotted-rule" style={{ marginBottom: 40 }} />
         </Reveal>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 60, alignItems: 'start' }}>
+        <div className="r-series" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 60, alignItems: 'start' }}>
           <Reveal from="left">
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {cats.map((c) => {
@@ -182,17 +182,18 @@ function SeriesIndex({ ui, data, go }) {
                   <li key={c.id}
                       onMouseEnter={() => setHover(c.id)} onMouseLeave={() => setHover(null)}
                       onClick={() => go({ kind: 'category', id: c.id })} data-cursor="hover"
+                      className="series-item"
                       style={{ display: 'grid', gridTemplateColumns: '54px 1fr auto 90px', gap: 20, alignItems: 'baseline', padding: '22px 0', borderBottom: '1px dashed var(--rule)', transition: 'color 0.3s, padding-left 0.3s, background 0.3s', color: hover === c.id ? 'var(--moss-deep)' : 'var(--ink)', paddingLeft: hover === c.id ? 18 : 0, background: hover === c.id ? 'oklch(0.92 0.04 130 / 0.18)' : 'transparent' }}>
                     <span style={{ fontFamily: 'var(--mono)', fontSize: 13, letterSpacing: '0.12em', color: 'var(--ink-soft)' }}>№ {c.number}</span>
                     <span className="serif-display" style={{ fontSize: 'clamp(22px, 3vw, 44px)', fontStyle: hover === c.id ? 'italic' : 'normal', transition: 'font-style 0.2s' }}>{c.label}</span>
-                    <span style={{ flex: 1, height: 1, borderTop: '1px dotted var(--ink-pale)', margin: '0 12px', alignSelf: 'center', minWidth: 80 }} />
+                    <span className="series-dot" style={{ flex: 1, height: 1, borderTop: '1px dotted var(--ink-pale)', margin: '0 12px', alignSelf: 'center', minWidth: 80 }} />
                     <span style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--ink-soft)', textAlign: 'right' }}>{total} {ui.pieces}</span>
                   </li>
                 )
               })}
             </ul>
           </Reveal>
-          <Reveal from="right" delay={0.08}>
+          <Reveal from="right" delay={0.08} className="r-series-panel">
             <div style={{ position: 'sticky', top: 90 }}>
               <div style={{ padding: 10, background: 'var(--paper-warm)', border: '1px solid var(--rule)' }}>
                 <div style={{ padding: 16, background: 'oklch(0.92 0.025 80 / 0.6)', border: '1px solid var(--rule)' }}>

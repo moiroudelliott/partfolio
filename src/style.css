@@ -464,3 +464,105 @@ input, button, a, textarea, select { cursor: none; }
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE — ne touche pas au layout desktop (≥ 960px)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Curseur : invisible sur écrans tactiles */
+@media (hover: none) {
+  .cursor-dot, .cursor-trail { display: none !important; }
+  html, body { cursor: auto !important; }
+  input, button, a, textarea, select, [data-cursor] { cursor: pointer !important; }
+}
+
+/* ── Nav hamburger (éléments invisibles sur desktop) ── */
+.nav-spacer { width: 110px; }
+.nav-burger {
+  display: none;
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.nav-drawer {
+  position: fixed;
+  top: 53px;
+  left: 0; right: 0;
+  background: oklch(0.945 0.018 85 / 0.97);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule);
+  padding: 20px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  z-index: 49;
+  animation: hero-up 0.22s ease both;
+}
+.nav-drawer a {
+  font-family: var(--serif);
+  font-variant-caps: small-caps;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+}
+.nav-drawer a:last-child { border-bottom: none; }
+.nav-drawer a.active { color: var(--moss-deep); }
+
+/* Le drawer est toujours rendu dans le DOM mais caché sur desktop */
+@media (min-width: 641px) {
+  .nav-drawer { display: none !important; }
+}
+
+/* ── Activation mobile ── */
+@media (max-width: 640px) {
+  .nav { padding: 12px 20px 10px !important; }
+  .nav .nav-links { display: none !important; }
+  .nav .nav-spacer { display: none !important; }
+  .nav .mark span { display: none; }
+  .nav-burger { display: block; }
+  .wrap { padding: 0 20px !important; }
+}
+
+/* ── Section padding ── */
+@media (max-width: 768px) {
+  .sec-hero    { padding: 28px 0 40px !important; }
+  .sec-body    { padding: 56px 0 80px !important; }
+  .sec-footer  { padding: 56px 0 36px !important; }
+  .sec-crumb   { padding: 12px 0 0 !important; }
+  .sec-cat     { padding: 28px 0 28px !important; }
+  .sec-filter  { padding: 24px 0 16px !important; }
+  .sec-gallery { padding: 12px 0 40px !important; }
+  .sec-pager   { padding: 32px 0 56px !important; }
+}
+
+/* ── Grilles ── */
+@media (max-width: 768px) {
+  /* Hero 2 colonnes */
+  .r-hero  { grid-template-columns: 1fr !important; gap: 32px !important; }
+  /* À propos 3 colonnes → 1 */
+  .r-about { grid-template-columns: 1fr !important; gap: 36px !important; }
+  .col-rule { display: none !important; }
+  /* Séries : cache le panneau d'aperçu */
+  .r-series { grid-template-columns: 1fr !important; }
+  .r-series-panel { display: none !important; }
+  /* Liste des séries : simplifie les colonnes */
+  .series-item { grid-template-columns: 44px 1fr 64px !important; gap: 12px !important; padding-left: 0 !important; }
+  .series-dot  { display: none !important; }
+  /* Grille 2 colonnes générique */
+  .r-2 { grid-template-columns: 1fr !important; gap: 32px !important; }
+  /* Category page */
+  .r-cat { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .r-cat-cover { display: none !important; }
+}
+
+/* ── Typographie mobile ── */
+@media (max-width: 640px) {
+  .drop { font-size: 3.2em !important; }
+}

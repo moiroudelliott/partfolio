@@ -5,8 +5,8 @@ export default function Footer({ ui, data }) {
   const c = data.contact
   const ar = data.artist
   return (
-    <footer id="contact" style={{ padding: '120px 56px 60px', position: 'relative' }}>
-      <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
+    <footer id="contact" className="sec-footer" style={{ padding: '120px 56px 60px', position: 'relative' }}>
+      <div className="wrap r-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
         <Reveal>
           <div className="kicker" style={{ marginBottom: 14 }}>· {ui.followMe} ·</div>
           <h3 className="serif-display" style={{ fontSize: 64, fontStyle: 'italic', margin: 0, marginBottom: 24 }}>{c.title}</h3>
