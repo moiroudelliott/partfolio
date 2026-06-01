@@ -6,7 +6,7 @@ export default function Footer({ ui, data }) {
   const ar = data.artist
   return (
     <footer id="contact" style={{ padding: '120px 56px 60px', position: 'relative' }}>
-      <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80 }}>
+      <div className="wrap" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
         <Reveal>
           <div className="kicker" style={{ marginBottom: 14 }}>· {ui.followMe} ·</div>
           <h3 className="serif-display" style={{ fontSize: 64, fontStyle: 'italic', margin: 0, marginBottom: 24 }}>{c.title}</h3>
@@ -17,9 +17,11 @@ export default function Footer({ ui, data }) {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <div style={{ position: 'relative' }}>
-            <Placeholder label={c.studioImage.label} image={c.studioImage.image} tone="moss" ratio="4 / 5" rotate={-1.5} tape={{ rotate: -8 }} style={{ width: 320, marginLeft: 'auto' }} />
-            <div className="hand" style={{ fontSize: 22, marginTop: 16, textAlign: 'right', transform: 'rotate(-1deg)' }}>{data.about.signature}</div>
+          <div style={{ paddingTop: 28 }}>
+            <div style={{ position: 'relative', transform: 'rotate(2deg)', width: 280, margin: '0 auto' }}>
+              <Placeholder label={c.studioImage.label} image={c.studioImage.image} tone="moss" ratio="4 / 5" rotate={0} tape={{ rotate: -8 }} />
+              <div className="hand" style={{ fontSize: 22, marginTop: 16, textAlign: 'right', transform: 'rotate(-1deg)' }}>{data.about.signature}</div>
+            </div>
           </div>
         </Reveal>
       </div>
