@@ -159,6 +159,8 @@ function SeriesIndex({ ui, data, go }) {
   const { open } = useLightbox()
   const cats = data.categories
   const tones = ['warm','ink','paper','rust','cool','moss']
+  const hasLabel   = cats.some(c => c.label?.trim())
+  const hasTagline = cats.some(c => c.tagline?.trim())
 
   return (
     <section id="series" style={{ padding: '90px 56px 120px', position: 'relative' }}>
@@ -199,12 +201,14 @@ function SeriesIndex({ ui, data, go }) {
                   {hover === null ? (
                     <>
                       <div style={{ aspectRatio: '3 / 4', background: 'var(--paper-deep)', border: '1px dashed oklch(0.72 0.03 68)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-                        <span className="hand" style={{ fontSize: 160, color: 'var(--ink-pale)', lineHeight: 1, transform: 'rotate(-12deg)', display: 'block', userSelect: 'none' }}>?</span>
+                        <span className="hand" style={{ fontSize: 46, color: 'var(--ink-soft)', lineHeight: 1.25, transform: 'rotate(-6deg)', display: 'block', userSelect: 'none', textAlign: 'center', padding: '0 16px', opacity: 0.65 }}>{ui.hoverHint}</span>
                       </div>
-                      <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                        <div style={{ height: 26, borderRadius: 2, background: 'var(--rule)', opacity: 0.5, width: '72%' }} />
-                        <div style={{ height: 13, borderRadius: 2, background: 'var(--rule)', opacity: 0.35, width: '90%' }} />
-                      </div>
+                      {(hasLabel || hasTagline) && (
+                        <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                          {hasLabel   && <div style={{ height: 26, borderRadius: 2, background: 'var(--rule)', opacity: 0.5, width: '72%' }} />}
+                          {hasTagline && <div style={{ height: 13, borderRadius: 2, background: 'var(--rule)', opacity: 0.35, width: '90%' }} />}
+                        </div>
+                      )}
                     </>
                   ) : (() => {
                     const c = cats.find(x => x.id === hover)
@@ -212,8 +216,8 @@ function SeriesIndex({ ui, data, go }) {
                     return (
                       <>
                         <Placeholder label={c.label.toLowerCase()} code={`PL · ${c.number}`} image={c.cover?.image} tone={tones[idx % tones.length]} ratio="3 / 4" rotate={0} hoverRot={0} tape={false} onClick={c.cover?.image ? () => open([c.cover.image]) : null} />
-                        <div className="serif-display" style={{ fontSize: 28, marginTop: 16, fontStyle: 'italic' }}>{c.label}</div>
-                        <div style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 4 }}>{c.tagline}</div>
+                        {c.label   && <div className="serif-display" style={{ fontSize: 28, marginTop: 16, fontStyle: 'italic' }}>{c.label}</div>}
+                        {c.tagline && <div style={{ fontSize: 14, color: 'var(--ink-soft)', marginTop: 4 }}>{c.tagline}</div>}
                       </>
                     )
                   })()}
